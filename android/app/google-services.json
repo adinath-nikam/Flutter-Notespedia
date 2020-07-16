@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "334222438532",
+    "firebase_url": "https://engineer-s-buddy.firebaseio.com",
+    "project_id": "engineer-s-buddy",
+    "storage_bucket": "engineer-s-buddy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334222438532:android:8cb38a318be112d9e312d1",
+        "android_client_info": {
+          "package_name": "com.hyperprogrammer.notespedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334222438532-gip8cc5d8s21mpoofnmb4tplc1ol5na3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hyperprogrammer.notespedia",
+            "certificate_hash": "1df81a0f75d1fa348833f34d7be74a3bd6a8c590"
+          }
+        },
+        {
+          "client_id": "334222438532-7eecuj5vf27tcem8c6b3ec0nh7ov25ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyiuhze_x-qAV7MoNJzy6YcGcee4W7xwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334222438532-7eecuj5vf27tcem8c6b3ec0nh7ov25ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "334222438532-9n23b2sm2aujs6fe68gcko02cnavj6n0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.notespedia.engineersbuddy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334222438532:android:77a5fd9ca59aa932e312d1",
+        "android_client_info": {
+          "package_name": "com.notespedia.engineersbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334222438532-okbnofvvsioq2e9q7ll4s6u8uleldi6b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.notespedia.engineersbuddy",
+            "certificate_hash": "1df81a0f75d1fa348833f34d7be74a3bd6a8c590"
+          }
+        },
+        {
+          "client_id": "334222438532-7eecuj5vf27tcem8c6b3ec0nh7ov25ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyiuhze_x-qAV7MoNJzy6YcGcee4W7xwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334222438532-7eecuj5vf27tcem8c6b3ec0nh7ov25ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "334222438532-9n23b2sm2aujs6fe68gcko02cnavj6n0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.notespedia.engineersbuddy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

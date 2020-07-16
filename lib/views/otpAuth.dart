@@ -2,39 +2,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notespedia/views/authTosWidget.dart';
-import 'package:notespedia/views/profileBuild.dart';
 import 'background_1.dart';
 
-//Phone Auth Main
-// ignore: camel_case_types
-class phoneAuth extends StatelessWidget {
+//OTP Auth Main
+class otpAuth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: phoneAuthBody(),
+        body: otpAuthBody(),
       ),
     );
   }
 }
 
-// Phone Auth Body
-class phoneAuthBody extends StatelessWidget {
+// OTP Auth Body
+class otpAuthBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
         children: <Widget>[
-          background("assets/images/phoneAuth_illustration.jpg"),
-          phoneAuthCard()
+          background("assets/images/otpIllustration.png"),
+          otpAuthCard()
         ],
       ),
     );
   }
 }
 
-// Phone Auth Elevated Card
-class phoneAuthCard extends StatelessWidget {
+// OTP Auth Elevated Card
+class otpAuthCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -56,10 +54,10 @@ class phoneAuthCard extends StatelessWidget {
                         width: 150,
                       ),
                       Text(
-                        "Verify your Phone Number.",
+                        "Enter OTP, Send to your Phone Number.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           fontFamily: "font_primary",
                           color: Colors.grey[500],
                         ),
@@ -74,13 +72,14 @@ class phoneAuthCard extends StatelessWidget {
                               return "Invalid Phone Number!";
                             }
                           },
-                          maxLength: 10,
+                          maxLength: 6,
                           maxLines: 1,
                           keyboardType: TextInputType.phone,
+                          textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                            hintText: "+91",
+                            hintText: "* * * *",
                             prefixIcon: Icon(
-                              Icons.phone,
+                              Icons.vpn_key,
                               color: Colors.lightBlue,
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -100,11 +99,9 @@ class phoneAuthCard extends StatelessWidget {
                         width: 400,
                         child: RaisedButton(
                             color: Colors.lightBlue,
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => profileBuild()));
-                            },
+                            onPressed: () {},
                             child: Text(
-                              "Get OTP",
+                              "Verify OTP",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: "font_primary"),
