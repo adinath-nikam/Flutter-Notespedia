@@ -8,23 +8,36 @@ import 'background_1.dart';
 import 'background_1.dart';
 import 'homeView.dart';
 import 'otpAuth.dart';
-
+import 'profileBuild.dart';
 
 
 //Phone Auth Main
-class phoneAuth extends StatelessWidget {
+class phoneAuth extends StatefulWidget {
 
   //  Variable Declarations
+  @override
+  _phoneAuthState createState() => _phoneAuthState();
+}
+
+class _phoneAuthState extends State<phoneAuth> {
   final _phoneNumberTextEditController = TextEditingController();
+
   dynamic phoneNumberVal;
+
   final _phoneFormKey = GlobalKey<FormState>();
 
+  bool _loading;
 
+  @override
+  void initState() {
+    super.initState();
+    _loading = false;
+  }
 
-
-
-  // Authentication
   Future <bool> Authentication(String phoneNumber, BuildContext context) async{
+
+    progressBarState(true);
+
     FirebaseAuth _fAuth = FirebaseAuth.instance;
 
     _fAuth.verifyPhoneNumber(
@@ -37,22 +50,25 @@ class phoneAuth extends StatelessWidget {
 
         //Verification Completed
         verificationCompleted: (AuthCredential credential) async {
+          progressBarState(true);
           AuthResult authResult = await FirebaseAuth.instance.signInWithCredential(credential);
           FirebaseUser firebaseUser = authResult.user;
           if (firebaseUser != null) {
+            progressBarState(false);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => homeView()));
+                context, MaterialPageRoute(builder: (context) => profileBuild()));
           }
         },
 
         //Verification Failed
         verificationFailed: (AuthException authexception){
+          progressBarState(false);
           print(authexception.message);
         },
 
         //On CodeSent to Phone Number
         codeSent: (String verificationId, [int forceResendingToken]){
-
+          progressBarState(false);
           Navigator.push(context, MaterialPageRoute(
               builder: (context) => otpAuth(verificationId: verificationId,)
           ));
@@ -61,16 +77,6 @@ class phoneAuth extends StatelessWidget {
         codeAutoRetrievalTimeout: null);
 
   }
-
-
-
-
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +87,6 @@ class phoneAuth extends StatelessWidget {
     );
   }
 
-
-//  Phone Auth Body
   phoneAuthBody(BuildContext context) {
     return Center(
       child: Stack(
@@ -94,7 +98,12 @@ class phoneAuth extends StatelessWidget {
     );
   }
 
-//  Phone Auth Card
+  progressBarState(bool state){
+    setState(() {
+      _loading = state;
+    });
+  }
+
   phoneAuthCard(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
@@ -175,6 +184,8 @@ class phoneAuth extends StatelessWidget {
                                   fontFamily: "font_primary"),
                             )),
                       ),
+                      SizedBox(height: 10,),
+                      _loading ? LinearProgressIndicator() : SizedBox(height: 1,),
                       Divider(
                         color: Colors.lightBlue,
                         height: 20,
@@ -189,162 +200,3 @@ class phoneAuth extends StatelessWidget {
     );
   }
 }
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-//// Phone Auth Body
-//class phoneAuthBody extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return Center(
-//      child: Stack(
-//        children: <Widget>[
-//          background("assets/images/phoneAuth_illustration.jpg"),
-//          phoneAuthCard(),
-//        ],
-//      ),
-//    );
-//  }
-//}
-
-// Phone Auth Elevated Card
-//class phoneAuthCard extends StatefulWidget {
-//  @override
-//  _phoneAuthCardState createState() => _phoneAuthCardState();
-//}
-//
-//class _phoneAuthCardState extends State<phoneAuthCard> {
-//  bool _loading;
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    _loading = false;
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return SingleChildScrollView(
-//      child: Container(
-//          margin: EdgeInsets.fromLTRB(0, 200, 0, 0),
-//          child: Center(
-//            child: Padding(
-//              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-//              child: Card(
-//                elevation: 20.0,
-//                child: Padding(
-//                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-//                  child: Column(
-//                    mainAxisSize: MainAxisSize.min,
-//                    children: <Widget>[
-//                      _loading
-//                          ? LinearProgressIndicator()
-//                          : Text("Press button to download"),
-//                      Image(
-//                        image: AssetImage("assets/images/logo.png"),
-//                        height: 150,
-//                        width: 150,
-//                      ),
-//                      Text(
-//                        "Verify your Phone Number.",
-//                        textAlign: TextAlign.center,
-//                        style: TextStyle(
-//                          fontSize: 18,
-//                          fontFamily: "font_primary",
-//                          color: Colors.grey[500],
-//                        ),
-//                      ),
-//                      Form(
-//                        child: TextFormField(
-//                          // ignore: missing_return
-//                          validator: (String value) {
-//                            if (value.isEmpty) {
-//                              return "Required!";
-//                            } else if (value.length < 10) {
-//                              return "Invalid Phone Number!";
-//                            }
-//                          },
-//                          maxLength: 10,
-//                          maxLines: 1,
-//                          keyboardType: TextInputType.phone,
-//                          decoration: InputDecoration(
-//                            hintText: "+91",
-//                            prefixIcon: Icon(
-//                              Icons.phone,
-//                              color: Colors.lightBlue,
-//                            ),
-//                            enabledBorder: OutlineInputBorder(
-//                              borderRadius:
-//                                  BorderRadius.all(Radius.circular(4)),
-//                              borderSide:
-//                                  BorderSide(width: 2, color: Colors.lightBlue),
-//                            ),
-//                            border: OutlineInputBorder(),
-//                          ),
-//                        ),
-//                      ),
-//                      SizedBox(
-//                        height: 10,
-//                      ),
-//                      SizedBox(
-//                        height: 40,
-//                        width: 400,
-//                        child: RaisedButton(
-//                            color: Colors.lightBlue,
-//                            onPressed: () {
-//                              setState(() {
-//                                _loading = !_loading;
-//                              });
-//                              //Navigator.of(context).push(MaterialPageRoute(builder: (context) => profileBuild()));
-//                            },
-//                            child: Text(
-//                              "Get OTP",
-//                              style: TextStyle(
-//                                  color: Colors.white,
-//                                  fontFamily: "font_primary"),
-//                            )),
-//                      ),
-//                      Divider(
-//                        color: Colors.lightBlue,
-//                        height: 20,
-//                      ),
-//                      authTosWidget(),
-//                    ],
-//                  ),
-//                ),
-//              ),
-//            ),
-//          )),
-//    );
-//  }
-//}
-
-//class progressIndicator extends StatefulWidget {
-//  @override
-//  progressIndicatorState createState() => progressIndicatorState();
-//}
-//
-//class progressIndicatorState extends State<progressIndicator> {
-//  bool _loading;
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    _loading = false;
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      child: _loading ? LinearProgressIndicator() : Text("Press button to download"),
-//    );
-//  }
-//}
-//

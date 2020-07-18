@@ -103,7 +103,7 @@ class profileForm extends StatelessWidget {
               validator: (String value) {
                 if (value.isEmpty) {
                   return "Required!";
-                } else if (value.length < 10) {
+                } else if (value.length < 21) {
                   return "Invalid Phone Number!";
                 }
               },
@@ -138,7 +138,7 @@ class profileForm extends StatelessWidget {
               maxLines: 1,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                hintText: "Username",
+                hintText: "username@example.com",
                 prefixIcon: Icon(
                   Icons.alternate_email,
                   color: Colors.lightBlue,

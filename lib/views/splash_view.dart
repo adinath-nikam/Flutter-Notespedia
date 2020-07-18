@@ -1,8 +1,15 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:notespedia/views/homeView.dart';
 import 'package:notespedia/views/phoneAuth.dart';
+
+import 'phoneAuth.dart';
+import 'profileBuild.dart';
+
+
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -10,9 +17,28 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
+    _checkIfUserLoggedIn();
     super.initState();
+  }
+
+  Future _checkIfUserLoggedIn() async {
+    //Check if User Logged In.
+    if (await FirebaseAuth.instance.currentUser() != null) {
+    // If User already Logged In
+      Timer(
+          Duration(seconds: 3),
+              () =>
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => profileBuild()
+                  )
+              )
+      );
+    } else {
+    // If not
       Timer(
           Duration(seconds: 3),
               () =>
@@ -22,7 +48,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   )
               )
       );
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
