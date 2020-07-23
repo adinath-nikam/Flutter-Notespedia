@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notespedia/views/homeView.dart';
 import 'package:notespedia/views/phoneAuth.dart';
-
 import 'phoneAuth.dart';
 import 'profileBuild.dart';
-
-
+import 'package:notespedia/service/firebaseService.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -17,7 +16,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     _checkIfUserLoggedIn();
@@ -27,27 +25,39 @@ class _SplashScreenState extends State<SplashScreen> {
   Future _checkIfUserLoggedIn() async {
     //Check if User Logged In.
     if (await FirebaseAuth.instance.currentUser() != null) {
-    // If User already Logged In
-      Timer(
-          Duration(seconds: 3),
-              () =>
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => profileBuild()
-                  )
-              )
-      );
+      DatabaseReference databaseReference = FirebaseDatabase.instance
+          .reference()
+          .child("Notespedia/USERS/+919113910407");
+      // ignore: unrelated_type_equality_checks
+      userNode(databaseReference).then((value) {
+        if (value == true) {
+          Timer(
+              Duration(seconds: 1),
+              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => homeView())));
+        } else {
+          Timer(
+              Duration(seconds: 1),
+              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => profileBuild())));
+        }
+      });
     } else {
-    // If not
+      // If not
       Timer(
-          Duration(seconds: 3),
-              () =>
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => phoneAuth()
-                  )
-              )
-      );
+          Duration(seconds: 1),
+          () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => phoneAuth())));
+    }
+  }
+
+  // Check if User Node is Present in RLTDB
+  Future<bool> userNode(DatabaseReference databaseReference) async {
+    DataSnapshot snapshot = await databaseReference.once();
+    if (snapshot.value == null) {
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -67,18 +77,20 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 250.0,
                 width: 250.0,
               ),
-              SizedBox(height: 80,),
+              SizedBox(
+                height: 80,
+              ),
               Text(
                 "Made in ♥ India",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.grey[500],
-                    fontFamily: "font_primary",
-                    fontSize: 15,),
+                  color: Colors.grey[500],
+                  fontFamily: "font_primary",
+                  fontSize: 15,
+                ),
               )
             ],
           ),
-        )
-    );
+        ));
   }
 }

@@ -30,6 +30,12 @@ class _otpAuthState extends State<otpAuth> {
   bool _loading;
 
   @override
+  void initState() {
+    super.initState();
+    _loading = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

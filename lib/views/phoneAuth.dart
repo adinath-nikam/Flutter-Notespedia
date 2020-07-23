@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notespedia/views/authTosWidget.dart';
 import 'package:notespedia/views/profileBuild.dart';
+import 'package:notespedia/views/splash_view.dart';
 import 'background_1.dart';
 import 'background_1.dart';
 import 'homeView.dart';
@@ -55,8 +56,8 @@ class _phoneAuthState extends State<phoneAuth> {
           FirebaseUser firebaseUser = authResult.user;
           if (firebaseUser != null) {
             progressBarState(false);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => profileBuild()));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => SplashScreen(),));
           }
         },
 
