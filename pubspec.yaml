@@ -35,6 +35,10 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   intl: 0.15.7
   fluttertoast: ^7.0.1
+  carousel_slider: ^1.4.1
+  persistent_bottom_nav_bar: any
+  google_fonts: ^1.1.0
+  auto_size_text: ^2.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -80,9 +84,13 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-     - family: font_primary
-       fonts:
-         - asset: assets/fonts/font_primary.ttf
-  #
+    - family: OpenSans-Bold
+      fonts:
+        - asset: assets/fonts/OpenSans-Bold.ttf
+    - family: OpenSans-Regular
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
+
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

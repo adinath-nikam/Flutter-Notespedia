@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:notespedia/models/userDataModel.dart';
 import 'package:notespedia/service/firebaseService.dart';
@@ -13,14 +14,8 @@ import 'homeView.dart';
 final userNameTextEditController = TextEditingController();
 final userEmailTextEditController = TextEditingController();
 final _profileFormKey = GlobalKey<FormState>();
-final _streamsDropdownFormKey = GlobalKey<FormState>();
-final _institutesDropdownFormKey = GlobalKey<FormState>();
-final _semestersDropdownFormKey = GlobalKey<FormState>();
-final _gendersDropdownFormKey = GlobalKey<FormState>();
-
 String fUid, fPhNumber;
 var selectedStream, selectedSemester, selectedInstitute, selectedGender;
-List<streamsModelClass> streamsList = [];
 
 class profileBuild extends StatefulWidget {
   @override
@@ -29,11 +24,13 @@ class profileBuild extends StatefulWidget {
 
 class _profileBuildState extends State<profileBuild> {
   bool _loading;
+  FToast fToast;
 
   @override
   void initState() {
     super.initState();
     _loading = false;
+    fToast = FToast(context);
   }
 
   progressBarState(bool state) {
@@ -135,6 +132,29 @@ class _profileBuildState extends State<profileBuild> {
                                       .child("Notespedia/USERS/" + fPhNumber)
                                       .set(userdatamodel.toJson())
                                       .whenComplete(() {
+                                    fToast.showToast(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24.0, vertical: 12.0),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25.0),
+                                          color: Colors.greenAccent,
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(Icons.check),
+                                            SizedBox(
+                                              width: 12.0,
+                                            ),
+                                            Text("Profile Created Successfully!"),
+                                          ],
+                                        ),
+                                      ),
+                                      gravity: ToastGravity.BOTTOM,
+                                      toastDuration: Duration(seconds: 2),
+                                    );
                                     print('UPLOAD SUCCESSFUL');
                                     progressBarState(false);
                                     Navigator.of(context).pushReplacement(

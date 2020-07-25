@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:notespedia/views/homeView.dart';
 import 'package:notespedia/views/phoneAuth.dart';
 import 'phoneAuth.dart';
+import 'package:notespedia/models/userDataModel.dart';
 import 'profileBuild.dart';
 import 'package:notespedia/service/firebaseService.dart';
 
@@ -18,6 +19,15 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+
+    String getPhoneNumber(String phNumber) {
+      fPhNumber = phNumber;
+    }
+
+    firebaseService().getUserPhoneNumber().then((value) {
+      getPhoneNumber(value);
+    });
+
     _checkIfUserLoggedIn();
     super.initState();
   }
@@ -25,23 +35,68 @@ class _SplashScreenState extends State<SplashScreen> {
   Future _checkIfUserLoggedIn() async {
     //Check if User Logged In.
     if (await FirebaseAuth.instance.currentUser() != null) {
+
       DatabaseReference databaseReference = FirebaseDatabase.instance
           .reference()
-          .child("Notespedia/USERS/+919113910407");
-      // ignore: unrelated_type_equality_checks
-      userNode(databaseReference).then((value) {
-        if (value == true) {
+          .child("Notespedia/USERS/"+fPhNumber);
+
+
+
+
+
+
+
+
+
+
+
+      FirebaseDatabase.instance.reference().child("Notespedia/USERS/"+fPhNumber).once().then((DataSnapshot dataSnapshot) {
+
+
+        if (dataSnapshot != null) {
+
+          userDataModel userdatamodel = new userDataModel.fromSnapshot(dataSnapshot);
+          print(userdatamodel.getUserName);
+
+
           Timer(
               Duration(seconds: 1),
-              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => homeView())));
+                  () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => homeView(userdatamodel: userdatamodel,))));
         } else {
           Timer(
               Duration(seconds: 1),
-              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  () => Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (BuildContext context) => profileBuild())));
         }
+
+
+
+
       });
+
+
+
+
+
+
+
+//      // ignore: unrelated_type_equality_checks
+//      userNode(databaseReference).then((value) {
+//        if (value == true) {
+//
+//
+//          Timer(
+//              Duration(seconds: 1),
+//              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+//                  builder: (BuildContext context) => homeView())));
+//        } else {
+//          Timer(
+//              Duration(seconds: 1),
+//              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+//                  builder: (BuildContext context) => profileBuild())));
+//        }
+//      });
     } else {
       // If not
       Timer(
@@ -74,18 +129,18 @@ class _SplashScreenState extends State<SplashScreen> {
             children: <Widget>[
               Image(
                 image: AssetImage("assets/images/logo.png"),
-                height: 250.0,
-                width: 250.0,
+                height: 150.0,
+                width: 150.0,
               ),
               SizedBox(
-                height: 80,
+                height: 100,
               ),
               Text(
                 "Made in ♥ India",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey[500],
-                  fontFamily: "font_primary",
+                  fontFamily: "OpenSans-Bold",
                   fontSize: 15,
                 ),
               )
