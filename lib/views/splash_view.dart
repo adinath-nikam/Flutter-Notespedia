@@ -19,7 +19,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-
     String getPhoneNumber(String phNumber) {
       fPhNumber = phNumber;
     }
@@ -35,51 +34,33 @@ class _SplashScreenState extends State<SplashScreen> {
   Future _checkIfUserLoggedIn() async {
     //Check if User Logged In.
     if (await FirebaseAuth.instance.currentUser() != null) {
-
       DatabaseReference databaseReference = FirebaseDatabase.instance
           .reference()
-          .child("Notespedia/USERS/"+fPhNumber);
+          .child("Notespedia/USERS/" + fPhNumber);
 
-
-
-
-
-
-
-
-
-
-
-      FirebaseDatabase.instance.reference().child("Notespedia/USERS/"+fPhNumber).once().then((DataSnapshot dataSnapshot) {
-
-
+      FirebaseDatabase.instance
+          .reference()
+          .child("Notespedia/USERS/" + fPhNumber)
+          .once()
+          .then((DataSnapshot dataSnapshot) {
         if (dataSnapshot != null) {
-
-          userDataModel userdatamodel = new userDataModel.fromSnapshot(dataSnapshot);
+          userDataModel userdatamodel =
+              new userDataModel.fromSnapshot(dataSnapshot);
           print(userdatamodel.getUserName);
-
 
           Timer(
               Duration(seconds: 1),
-                  () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => homeView(userdatamodel: userdatamodel,))));
+              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => homeView(
+                        userdatamodel: userdatamodel,
+                      ))));
         } else {
           Timer(
               Duration(seconds: 1),
-                  () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (BuildContext context) => profileBuild())));
         }
-
-
-
-
       });
-
-
-
-
-
-
 
 //      // ignore: unrelated_type_equality_checks
 //      userNode(databaseReference).then((value) {
@@ -128,20 +109,20 @@ class _SplashScreenState extends State<SplashScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Image(
-                image: AssetImage("assets/images/logo.png"),
-                height: 150.0,
-                width: 150.0,
+                image: AssetImage("assets/images/logo2.png"),
+                height: 150,
+                width: 150,
               ),
               SizedBox(
-                height: 100,
+                height: 200,
               ),
               Text(
                 "Made in ♥ India",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey[500],
-                  fontFamily: "OpenSans-Bold",
-                  fontSize: 15,
+                  fontFamily: "OpenSans-Regular",
+                  fontSize: 12,
                 ),
               )
             ],
