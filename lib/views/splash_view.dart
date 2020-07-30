@@ -108,13 +108,13 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Image(
-                image: AssetImage("assets/images/logo2.png"),
-                height: 150,
-                width: 150,
-              ),
-              SizedBox(
-                height: 200,
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                child: Image(
+                  image: AssetImage("assets/images/logo2.png"),
+                  height: 100,
+                  width: 100,
+                ),
               ),
               Text(
                 "Made in ♥ India",

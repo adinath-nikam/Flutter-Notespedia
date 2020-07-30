@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:notespedia/views/homeView.dart';
 
 class dashBoard extends StatelessWidget {
@@ -52,8 +51,18 @@ class dashBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Items> myList = [item1, item2, item3, item4, item5, item6, item7, item8, item9];
-    Color color = Colors.lightBlue ;
+    List<Items> myList = [
+      item1,
+      item2,
+      item3,
+      item4,
+      item5,
+      item6,
+      item7,
+      item8,
+      item9
+    ];
+    Color color = Colors.lightBlue;
     return SafeArea(
       child: Column(
         children: <Widget>[
@@ -80,25 +89,19 @@ class dashBoard extends StatelessWidget {
                         SizedBox(
                           height: 14,
                         ),
-                        Text(
-                          data.title,
-                          style: GoogleFonts.openSans(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600)),
-                        ),
+                        Text(data.title,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600)),
                         SizedBox(
                           height: 8,
                         ),
-                        Text(
-                          data.subtitle,
-                          style: GoogleFonts.openSans(
-                              textStyle: TextStyle(
-                                  color: Colors.white38,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600)),
-                        ),
+                        Text(data.subtitle,
+                            style: TextStyle(
+                                color: Colors.white38,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600)),
                         SizedBox(
                           height: 14,
                         ),
@@ -111,6 +114,7 @@ class dashBoard extends StatelessWidget {
       ),
     );
   }
+
   headerView() {
     return Container(
       child: Center(
@@ -160,5 +164,6 @@ class Items {
   String title;
   String subtitle;
   String img;
+
   Items({this.title, this.subtitle, this.img});
 }

@@ -4,13 +4,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:notespedia/models/carouselModel.dart';
 import 'package:notespedia/models/userDataModel.dart';
 import 'package:notespedia/service/firebaseService.dart';
 import 'package:notespedia/views/appBar.dart';
 import 'package:notespedia/views/background_1.dart';
 import 'package:notespedia/views/homeProfileCardView.dart';
+import 'package:notespedia/views/pdfViewer.dart';
 import 'package:notespedia/views/profileBuild.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:notespedia/views/libraryView.dart';
@@ -80,20 +80,6 @@ class _homeViewState extends State<homeView> {
   }
 
   @override
-  void initState() {
-//    FirebaseDatabase.instance
-//        .reference()
-//        .child("Notespedia/USERS/+919113910407")
-//        .once()
-//        .then((value) {
-//      userdatamodel = new userDataModel.fromSnapshot(value);
-//      print(userdatamodel.getUserName);
-//    });
-
-    print(widget.userdatamodel.getUserName);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return PersistentTabView(
       controller: _controller,
@@ -104,7 +90,6 @@ class _homeViewState extends State<homeView> {
       backgroundColor: Colors.white,
       handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset: true,
-      // This needs to be true if you want to move up the screen when keyboard appears.
       stateManagement: true,
       hideNavigationBarWhenKeyboardShows: true,
       // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument.
@@ -125,7 +110,7 @@ class _homeViewState extends State<homeView> {
         duration: Duration(milliseconds: 200),
       ),
       navBarStyle:
-          NavBarStyle.style13, // Choose the nav bar style with this property.
+          NavBarStyle.style13, // Choose the nav bar style with this property
     );
   }
 }
@@ -162,7 +147,7 @@ class _homeState extends State<home> {
           StreamBuilder(
             stream: FirebaseDatabase.instance
                 .reference()
-                .child("Notespedia/CarouselData")
+                .child("Notespedia/CAROUSELS/HOMECAROUSELDATA")
                 .onValue,
             builder: (context, snapshot) {
               if (snapshot.hasData &&
@@ -170,9 +155,11 @@ class _homeState extends State<home> {
                   snapshot.data.snapshot.value != null) {
                 Map<dynamic, dynamic> data = snapshot.data.snapshot.value;
 
+                carouselModel.clear();
+
                 data.forEach((key, value) {
                   carouselModel
-                      .add(new CarouselData(value['IMGURL'], value['LINK']));
+                      .add(new CarouselData(value['IMGURL'], value['DATAURL']));
                 });
 
                 return CarouselSlider(
@@ -185,7 +172,6 @@ class _homeState extends State<home> {
                   aspectRatio: 2.0,
                   enlargeCenterPage: true,
                   items: carouselModel.map((value) {
-                    print(value.link);
                     return Builder(builder: (BuildContext context) {
                       return Container(
                         height: MediaQuery.of(context).size.height * 0.30,
@@ -212,7 +198,7 @@ class _homeState extends State<home> {
                   }).toList(),
                 );
               } else {
-                return Text("No!");
+                return Center(child: Text("Something Went Wrong!"));
               }
             },
           ),

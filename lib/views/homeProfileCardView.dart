@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notespedia/models/userDataModel.dart';
@@ -19,27 +18,30 @@ class homeProfileCardView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Hi,\n" + userdatamodel.getUserName,
-                    style: TextStyle(
-                      fontFamily: "OpenSans-Bold",
-                      color: Colors.black,
-                      fontSize: 20.0,
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Hi,\n" + userdatamodel.getUserName,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: "OpenSans-Bold",
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ),
                     ),
-                  ),
-                  Text(
-                    userdatamodel.getUserStream,
-                    style: TextStyle(
-                      fontFamily: "OpenSans-Regular",
-                      color: Colors.grey[500],
-                      fontSize: 11.0,
+                    Text(
+                      userdatamodel.getUserStream,
+                      style: TextStyle(
+                        fontFamily: "OpenSans-Regular",
+                        color: Colors.grey[500],
+                        fontSize: 11.0,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(
                 width: 80,
