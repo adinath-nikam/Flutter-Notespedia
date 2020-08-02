@@ -10,18 +10,26 @@ import 'package:notespedia/views/pdfViewer.dart';
 
 import 'appBar.dart';
 
-class libraryView extends StatelessWidget {
+class libraryView extends StatefulWidget {
+  @override
+  _libraryViewState createState() => _libraryViewState();
+}
+
+class _libraryViewState extends State<libraryView>
+    with AutomaticKeepAliveClientMixin<libraryView> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        color: Colors.white,
-        child: DefaultTabController(
+      child: Scaffold(
+        appBar: PreferredSize(preferredSize: Size.fromHeight(100), child: appBar(),),
+        body: DefaultTabController(
           length: 3,
           initialIndex: 0,
           child: Column(
             children: <Widget>[
-              appBar(),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 30),
                 child: TabBar(
@@ -121,9 +129,9 @@ class libraryView extends StatelessWidget {
             Text(
               body,
               style: TextStyle(
-                fontSize: 12,
-                fontFamily: "OpenSans-Regular",
-              ),
+                  fontSize: 12,
+                  fontFamily: "OpenSans-Regular",
+                  color: Colors.grey[800]),
             ),
             SizedBox(
               height: 20,
@@ -132,6 +140,7 @@ class libraryView extends StatelessWidget {
               future:
                   FirebaseDatabase.instance.reference().child(dbPath).once(),
               builder: (context, AsyncSnapshot) {
+                print(AsyncSnapshot.data);
                 if (AsyncSnapshot.hasData &&
                     !AsyncSnapshot.hasError &&
                     AsyncSnapshot.data.value != null) {
@@ -153,10 +162,13 @@ class libraryView extends StatelessWidget {
                     children: bookDataModelList.map((value) {
                       // -------
                       return GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => pdfViewer()),
+                            MaterialPageRoute(
+                                builder: (context) => pdfViewer(
+                                      url: value.bookUrl,
+                                    )),
                           );
                         },
                         child: Row(
@@ -168,7 +180,8 @@ class libraryView extends StatelessWidget {
                                 Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.20,
-                                  width: MediaQuery.of(context).size.width * 0.3,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
                                   child: Card(
                                       color: Colors.white,
                                       shape: RoundedRectangleBorder(
