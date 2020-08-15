@@ -5,8 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:notespedia/models/models.dart';
 import 'package:notespedia/models/userDataModel.dart';
 import 'package:notespedia/service/firebaseService.dart';
+import 'package:notespedia/views/splash_view.dart';
+import 'package:tuple/tuple.dart';
 import 'authTosWidget.dart';
 import 'background_1.dart';
 import 'homeView.dart';
@@ -97,6 +100,9 @@ class _profileBuildState extends State<profileBuild> {
                           color: Colors.grey[500],
                         ),
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       profileForm(),
                       SizedBox(
                         height: 10,
@@ -148,7 +154,8 @@ class _profileBuildState extends State<profileBuild> {
                                             SizedBox(
                                               width: 12.0,
                                             ),
-                                            Text("Profile Created Successfully!"),
+                                            Text(
+                                                "Profile Created Successfully!"),
                                           ],
                                         ),
                                       ),
@@ -160,7 +167,7 @@ class _profileBuildState extends State<profileBuild> {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                homeView()));
+                                                SplashScreen()));
                                   });
                                 }
                               }
@@ -273,239 +280,49 @@ class _profileFormState extends State<profileForm> {
               height: 20,
             ),
 
-            // Streams Dropdown
+            streamsDropDown(
+                "Notespedia/DROPDOWNS/STREAMS",
+                "Select your Stream",
+                Icon(
+                  Icons.school,
+                  color: Colors.lightBlue,
+                )),
 
-            StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection("STREAMS").snapshots(),
-                // ignore: missing_return
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    const Text("Loading.....");
-                  else {
-                    List<DropdownMenuItem> streamsItems = [];
-                    for (int i = 0; i < snapshot.data.documents.length; i++) {
-                      DocumentSnapshot snap = snapshot.data.documents[i];
-                      streamsItems.add(
-                        DropdownMenuItem(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              snap.documentID,
-                            ),
-                          ),
-                          value: "${snap.documentID}",
-                        ),
-                      );
-                    }
-                    return Container(
-                        child: streamsItems.length == 0
-                            ? Text('No Data')
-                            : DropdownButtonFormField(
-                                validator: (value) =>
-                                    value == null ? 'Required!' : null,
-                                decoration: InputDecoration(
-                                  hintText: "Select Your Stream",
-                                  prefixIcon: Icon(
-                                    Icons.school,
-                                    color: Colors.lightBlue,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.lightBlue),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedStream = value;
-                                  });
-                                },
-                                items: streamsItems,
-                                isExpanded: true,
-                              ));
-                  }
-                }),
-
-            // Streams Dropdown
             SizedBox(
               height: 20,
             ),
-            // Semesters Dropdown
 
-            StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection("SEMESTERS").snapshots(),
-                // ignore: missing_return
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    const Text("Loading.....");
-                  else {
-                    List<DropdownMenuItem> semestersItems = [];
-                    for (int i = 0; i < snapshot.data.documents.length; i++) {
-                      DocumentSnapshot snap = snapshot.data.documents[i];
-                      semestersItems.add(
-                        DropdownMenuItem(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              snap.documentID,
-                            ),
-                          ),
-                          value: "${snap.documentID}",
-                        ),
-                      );
-                    }
-                    return Container(
-                        child: semestersItems.length == 0
-                            ? Text('No Data')
-                            : DropdownButtonFormField(
-                                validator: (value) =>
-                                    value == null ? 'Required!' : null,
-                                decoration: InputDecoration(
-                                  hintText: "Select Your Semester",
-                                  prefixIcon: Icon(
-                                    Icons.date_range,
-                                    color: Colors.lightBlue,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.lightBlue),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedSemester = value;
-                                  });
-                                },
-                                items: semestersItems,
-                                isExpanded: true,
-                              ));
-                  }
-                }),
+            semestersDropDown(
+                "Notespedia/DROPDOWNS/SEMESTERS",
+                "Select your Semester",
+                Icon(
+                  Icons.date_range,
+                  color: Colors.lightBlue,
+                )),
 
-            // Semesters Dropdown
             SizedBox(
               height: 20,
             ),
-            // Colleges Dropdown
 
-            StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection("INSTITUTES").snapshots(),
-                // ignore: missing_return
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    const Text("Loading.....");
-                  else {
-                    List<DropdownMenuItem> instituteItems = [];
-                    for (int i = 0; i < snapshot.data.documents.length; i++) {
-                      DocumentSnapshot snap = snapshot.data.documents[i];
-                      instituteItems.add(
-                        DropdownMenuItem(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              snap.documentID,
-                            ),
-                          ),
-                          value: "${snap.documentID}",
-                        ),
-                      );
-                    }
-                    return Container(
-                        child: instituteItems.length == 0
-                            ? Text('No Data')
-                            : DropdownButtonFormField(
-                                validator: (value) =>
-                                    value == null ? 'Required!' : null,
-                                decoration: InputDecoration(
-                                  hintText: "Select Your Institute",
-                                  prefixIcon: Icon(
-                                    Icons.business,
-                                    color: Colors.lightBlue,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.lightBlue),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedInstitute = value;
-                                  });
-                                },
-                                items: instituteItems,
-                                isExpanded: true,
-                              ));
-                  }
-                }),
+            institutesDropDown(
+                "Notespedia/DROPDOWNS/INSTITUTES",
+                "Select your Institute",
+                Icon(
+                  Icons.location_city,
+                  color: Colors.lightBlue,
+                )),
 
-            // CollegesDropdown
             SizedBox(
               height: 20,
             ),
-            // Gender Dropdown
 
-            StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection("GENDERS").snapshots(),
-                // ignore: missing_return
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    const Text("Loading.....");
-                  else {
-                    List<DropdownMenuItem> genderItems = [];
-                    for (int i = 0; i < snapshot.data.documents.length; i++) {
-                      DocumentSnapshot snap = snapshot.data.documents[i];
-                      genderItems.add(
-                        DropdownMenuItem(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              snap.documentID,
-                            ),
-                          ),
-                          value: "${snap.documentID}",
-                        ),
-                      );
-                    }
-                    return Container(
-                        child: genderItems.length == 0
-                            ? Text('No Data')
-                            : DropdownButtonFormField(
-                                validator: (value) =>
-                                    value == null ? 'Required!' : null,
-                                decoration: InputDecoration(
-                                  hintText: "Select Your Gender",
-                                  prefixIcon: Icon(
-                                    Icons.call_split,
-                                    color: Colors.lightBlue,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.lightBlue),
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedGender = value;
-                                  });
-                                },
-                                items: genderItems,
-                                isExpanded: true,
-                              ));
-                  }
-                }),
-
-            // Streams Dropdown
+            genderDropDown(
+                "Notespedia/DROPDOWNS/GENDERS",
+                "Select your Gender",
+                Icon(
+                  Icons.call_split,
+                  color: Colors.lightBlue,
+                )),
 
             SizedBox(
               height: 10,
@@ -515,4 +332,245 @@ class _profileFormState extends State<profileForm> {
       ),
     );
   }
+
+  //Streams DropDown --------------
+  streamsDropDown(String dbPath, String hint, Icon dropdownIcon) {
+    return FutureBuilder(
+      future: FirebaseDatabase.instance.reference().child(dbPath).once(),
+      builder: (context, AsyncSnapshot) {
+        if (AsyncSnapshot.hasData && AsyncSnapshot.data.value != null) {
+          List<dropDownDataClass> dropDownDataClassList = [];
+
+          Map<dynamic, dynamic> data = AsyncSnapshot.data.value;
+
+          data.forEach((key, value) {
+            dropDownDataClassList.add(new dropDownDataClass(value));
+          });
+
+          return Container(
+              child: dropDownDataClassList.length == 0
+                  ? Text('No Data. Av')
+                  : DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        hintText: hint,
+                        prefixIcon: dropdownIcon,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderSide:
+                              BorderSide(width: 2, color: Colors.lightBlue),
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedStream = value;
+                        });
+                      },
+                      items: dropDownDataClassList.map((item) {
+                        return DropdownMenuItem(
+                          value: item.dropDownItem,
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 180,
+                                child: Text(
+                                  item.dropDownItem,
+                                  style: TextStyle(color: Colors.black),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ));
+        } else if (AsyncSnapshot.hasError) {
+          return Text("Something Went Wrong");
+        }
+        return Center(child: Text("Loading..."));
+      },
+    );
+  }
+//Streams DropDown -------------
+
+//Semesters DropDown --------------
+  semestersDropDown(String dbPath, String hint, Icon dropdownIcon) {
+    return FutureBuilder(
+      future: FirebaseDatabase.instance.reference().child(dbPath).orderByKey().once(),
+      builder: (context, AsyncSnapshot) {
+        if (AsyncSnapshot.hasData && AsyncSnapshot.data.value != null) {
+          List<dropDownDataClass> dropDownDataClassList = [];
+
+          Map<dynamic, dynamic> data = AsyncSnapshot.data.value;
+
+          data.forEach((key, value) {
+            dropDownDataClassList.add(new dropDownDataClass(value));
+          });
+
+          return Container(
+              child: dropDownDataClassList.length == 0
+                  ? Text('No Data. Av')
+                  : DropdownButtonFormField(
+                decoration: InputDecoration(
+                  hintText: hint,
+                  prefixIcon: dropdownIcon,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    borderSide:
+                    BorderSide(width: 2, color: Colors.lightBlue),
+                  ),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    selectedSemester = value;
+                  });
+                },
+                items: dropDownDataClassList.map((item) {
+                  return DropdownMenuItem(
+                    value: item.dropDownItem,
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 180,
+                          child: Text(
+                            item.dropDownItem,
+                            style: TextStyle(color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ));
+        } else if (AsyncSnapshot.hasError) {
+          return Text("Something Went Wrong");
+        }
+        return Center(child: Text("Loading..."));
+      },
+    );
+  }
+//Semesters DropDown -------------
+
+//Institutes DropDown --------------
+  institutesDropDown(String dbPath, String hint, Icon dropdownIcon) {
+    return FutureBuilder(
+      future: FirebaseDatabase.instance.reference().child(dbPath).once(),
+      builder: (context, AsyncSnapshot) {
+        if (AsyncSnapshot.hasData && AsyncSnapshot.data.value != null) {
+          List<dropDownDataClass> dropDownDataClassList = [];
+
+          Map<dynamic, dynamic> data = AsyncSnapshot.data.value;
+
+          data.forEach((key, value) {
+            dropDownDataClassList.add(new dropDownDataClass(value));
+          });
+
+          return Container(
+              child: dropDownDataClassList.length == 0
+                  ? Text('No Data. Av')
+                  : DropdownButtonFormField(
+                decoration: InputDecoration(
+                  hintText: hint,
+                  prefixIcon: dropdownIcon,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    borderSide:
+                    BorderSide(width: 2, color: Colors.lightBlue),
+                  ),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    selectedInstitute = value;
+                  });
+                },
+                items: dropDownDataClassList.map((item) {
+                  return DropdownMenuItem(
+                    value: item.dropDownItem,
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 180,
+                          child: Text(
+                            item.dropDownItem,
+                            style: TextStyle(color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ));
+        } else if (AsyncSnapshot.hasError) {
+          return Text("Something Went Wrong");
+        }
+        return Center(child: Text("Loading..."));
+      },
+    );
+  }
+//Institutes DropDown -------------
+
+
+//Gender DropDown --------------
+  genderDropDown(String dbPath, String hint, Icon dropdownIcon) {
+    return FutureBuilder(
+      future: FirebaseDatabase.instance.reference().child(dbPath).once(),
+      builder: (context, AsyncSnapshot) {
+        if (AsyncSnapshot.hasData && AsyncSnapshot.data.value != null) {
+          List<dropDownDataClass> dropDownDataClassList = [];
+
+          Map<dynamic, dynamic> data = AsyncSnapshot.data.value;
+
+          data.forEach((key, value) {
+            dropDownDataClassList.add(new dropDownDataClass(value));
+          });
+
+          return Container(
+              child: dropDownDataClassList.length == 0
+                  ? Text('No Data. Av')
+                  : DropdownButtonFormField(
+                decoration: InputDecoration(
+                  hintText: hint,
+                  prefixIcon: dropdownIcon,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    borderSide:
+                    BorderSide(width: 2, color: Colors.lightBlue),
+                  ),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    selectedGender = value;
+                  });
+                },
+                items: dropDownDataClassList.map((item) {
+                  return DropdownMenuItem(
+                    value: item.dropDownItem,
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 180,
+                          child: Text(
+                            item.dropDownItem,
+                            style: TextStyle(color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ));
+        } else if (AsyncSnapshot.hasError) {
+          return Text("Something Went Wrong");
+        }
+        return Center(child: Text("Loading..."));
+      },
+    );
+  }
+//Gender DropDown -------------
 }

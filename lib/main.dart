@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:notespedia/views/ideView.dart';
 import 'package:notespedia/views/splash_view.dart';
 
 void main() async{

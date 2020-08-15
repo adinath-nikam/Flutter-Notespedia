@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notespedia/models/carouselModel.dart';
+import 'package:notespedia/models/models.dart';
 import 'package:notespedia/models/userDataModel.dart';
 import 'package:notespedia/views/appBar.dart';
 import 'package:notespedia/views/homeProfileCardView.dart';
@@ -126,8 +126,8 @@ class _homeState extends State<home> with AutomaticKeepAliveClientMixin<home> {
                   carouselModel.clear();
 
                   data.forEach((key, value) {
-                    carouselModel
-                        .add(new CarouselData(value['IMGURL'], value['DATAURL']));
+                    carouselModel.add(
+                        new CarouselData(value['IMGURL'], value['DATAURL']));
                   });
 
                   return CarouselSlider(
@@ -147,8 +147,8 @@ class _homeState extends State<home> with AutomaticKeepAliveClientMixin<home> {
                           child: Card(
                               color: Colors.white,
                               shape: RoundedRectangleBorder(
-                                side:
-                                    BorderSide(color: Colors.lightBlue, width: 2),
+                                side: BorderSide(
+                                    color: Colors.lightBlue, width: 2),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Container(
@@ -169,9 +169,6 @@ class _homeState extends State<home> with AutomaticKeepAliveClientMixin<home> {
                   return Center(child: Text("Something Went Wrong!"));
                 }
               },
-            ),
-            homeProfileCardView(
-              userdatamodel: userdatamodel,
             ),
           ],
         ),

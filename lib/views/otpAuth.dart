@@ -6,6 +6,7 @@ import 'package:notespedia/views/authTosWidget.dart';
 import 'background_1.dart';
 import 'homeView.dart';
 import 'profileBuild.dart';
+import 'splash_view.dart';
 
 //OTP Auth Main
 class otpAuth extends StatefulWidget {
@@ -143,7 +144,7 @@ class _otpAuthState extends State<otpAuth> {
                                 if (firebaseuser != null) {
                                   progressBarState(false);
                                   Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => profileBuild()
+                                      builder: (context) => SplashScreen()
                                   ));
                                 } else {
                                   progressBarState(false);

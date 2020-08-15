@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:notespedia/models/bookDataModel.dart';
-import 'package:notespedia/models/carouselModel.dart';
 import 'package:notespedia/views/pdfViewer.dart';
 
 import 'appBar.dart';
@@ -24,7 +23,10 @@ class _libraryViewState extends State<libraryView>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(preferredSize: Size.fromHeight(100), child: appBar(),),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(100),
+          child: appBar(),
+        ),
         body: DefaultTabController(
           length: 3,
           initialIndex: 0,

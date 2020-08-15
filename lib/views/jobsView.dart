@@ -15,13 +15,10 @@ class _jobsViewState extends State<jobsView>
   @override
   bool get wantKeepAlive => true;
 
-  Future<List<Post>> search(String search) async {
+  Future<List<internshipModel>> search(String search) async {
     await Future.delayed(Duration(seconds: 2));
     return List.generate(search.length, (int index) {
-      return Post(
-        "Title : $search $index",
-        "Description :$search $index",
-      );
+      return internshipModel(internshipName: search);
     });
   }
 
@@ -35,14 +32,14 @@ class _jobsViewState extends State<jobsView>
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: SearchBar<Post>(
+        child: SearchBar<internshipModel>(
             hintText: "Where are you looking for ?",
             iconActiveColor: Colors.lightBlue,
             onSearch: search,
-            onItemFound: (Post post, int index) {
+            onItemFound: (internshipModel internModel, int index) {
               return ListTile(
-                title: Text(post.title),
-                subtitle: Text(post.description),
+                title: Text(internModel.internshipName),
+                subtitle: Text(internModel.internshipPlace),
               );
             },
             placeHolder: SingleChildScrollView(child: futureBuilder("Notespedia/INTERNSHIPS"),)),

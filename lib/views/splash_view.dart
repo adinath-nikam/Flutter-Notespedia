@@ -1,10 +1,16 @@
 import 'dart:async';
+import 'package:connectivity/connectivity.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lovelydialogs/lovely_dialogs.dart';
 import 'package:notespedia/views/homeView.dart';
+import 'package:notespedia/views/networkStatus.dart';
 import 'package:notespedia/views/phoneAuth.dart';
 import 'phoneAuth.dart';
 import 'package:notespedia/models/userDataModel.dart';
@@ -19,82 +25,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    String getPhoneNumber(String phNumber) {
-      fPhNumber = phNumber;
-    }
-
-    firebaseService().getUserPhoneNumber().then((value) {
-      getPhoneNumber(value);
-    });
-
-    _checkIfUserLoggedIn();
-    super.initState();
-  }
-
-  Future _checkIfUserLoggedIn() async {
-    //Check if User Logged In.
-    if (await FirebaseAuth.instance.currentUser() != null) {
-      DatabaseReference databaseReference = FirebaseDatabase.instance
-          .reference()
-          .child("Notespedia/USERS/" + fPhNumber);
-
-      FirebaseDatabase.instance
-          .reference()
-          .child("Notespedia/USERS/" + fPhNumber)
-          .once()
-          .then((DataSnapshot dataSnapshot) {
-        if (dataSnapshot != null) {
-          userDataModel userdatamodel =
-              new userDataModel.fromSnapshot(dataSnapshot);
-          print(userdatamodel.getUserName);
-
-          Timer(
-              Duration(seconds: 1),
-              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => homeView(
-                        userdatamodel: userdatamodel,
-                      ))));
-        } else {
-          Timer(
-              Duration(seconds: 1),
-              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => profileBuild())));
-        }
-      });
-
-//      // ignore: unrelated_type_equality_checks
-//      userNode(databaseReference).then((value) {
-//        if (value == true) {
-//
-//
-//          Timer(
-//              Duration(seconds: 1),
-//              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                  builder: (BuildContext context) => homeView())));
-//        } else {
-//          Timer(
-//              Duration(seconds: 1),
-//              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                  builder: (BuildContext context) => profileBuild())));
-//        }
-//      });
-    } else {
-      // If not
-      Timer(
-          Duration(seconds: 1),
-          () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => phoneAuth())));
-    }
-  }
-
-  // Check if User Node is Present in RLTDB
-  Future<bool> userNode(DatabaseReference databaseReference) async {
-    DataSnapshot snapshot = await databaseReference.once();
-    if (snapshot.value == null) {
-      return false;
-    } else {
-      return true;
-    }
+    checkInternetConnectivity();
   }
 
   @override
@@ -128,5 +59,73 @@ class _SplashScreenState extends State<SplashScreen> {
             ],
           ),
         ));
+  }
+
+  checkInternetConnectivity() async {
+    var result = await Connectivity().checkConnectivity();
+    if (result == ConnectivityResult.mobile ||
+        result == ConnectivityResult.wifi) {
+      String getPhoneNumber(String phNumber) {
+        fPhNumber = phNumber;
+      }
+
+      firebaseService().getUserPhoneNumber().then((value) {
+        getPhoneNumber(value);
+      });
+
+      checkIfUserLoggedIn();
+    } else if (result == ConnectivityResult.none) {
+      LovelyInfoDialog(
+        context: context,
+        title: 'Oh Snap!',
+        leading: Image(
+          image: AssetImage(
+              "assets/images/noInternetIllustration.png"),
+        ),
+        description: 'You lost internet connection!',
+        onConfirm: () {
+          initState();
+        },
+        confirmString: "Retry",
+        touchDismissible: false,
+      ).show();
+    }
+  }
+
+  Future checkIfUserLoggedIn() async {
+    //Check if User Logged In.
+    if (await FirebaseAuth.instance.currentUser() != null) {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Notespedia/USERS/" + fPhNumber)
+          .once()
+          .then((DataSnapshot dataSnapshot) {
+        if (dataSnapshot.value != null) {
+
+
+          userDataModel userdatamodel =
+              new userDataModel.fromSnapshot(dataSnapshot);
+          print(userdatamodel.getUserName);
+
+          Timer(
+              Duration(seconds: 1),
+              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => homeView(
+                        userdatamodel: userdatamodel,
+                      ))));
+        } else {
+          Timer(
+              Duration(seconds: 1),
+              () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => profileBuild())));
+        }
+      });
+    } else {
+      // If not
+      Timer(
+          Duration(seconds: 1),
+          () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => phoneAuth())));
+    }
   }
 }

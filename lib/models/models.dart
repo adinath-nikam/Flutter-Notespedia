@@ -32,3 +32,37 @@ class internshipModel {
       this.intershipDuration,
       this.internshipCompanyName});
 }
+
+class CarouselData {
+  String imgUrl, link;
+
+  CarouselData(this.imgUrl, this.link);
+
+  CarouselData.fromSnapshot(DataSnapshot dataSnapshot) {
+    imgUrl = dataSnapshot.value['IMGURL'];
+    link = dataSnapshot.value['LINK'];
+  }
+}
+
+class projectDataModel {
+  String projectTitle,
+      projectDescription,
+      projectImage,
+      projectAuthor,
+      projectCost,
+      projectStream;
+
+  projectDataModel(
+      this.projectTitle,
+      this.projectDescription,
+      this.projectImage,
+      this.projectAuthor,
+      this.projectCost,
+      this.projectStream);
+}
+
+class dropDownDataClass {
+  String dropDownItem;
+
+  dropDownDataClass(this.dropDownItem);
+}
